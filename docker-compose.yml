@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  remix:
+    container_name: remix-container
+    build: ./docker/remix
+    ports:
+      - 3000:3000
+    volumes:
+      - ./docker/remix/app:/usr/server/app
+      - ./docker/remix/public:/usr/server/public
+    stdin_open: true
+    tty: true
+
+  db:
+    container_name: mysql-container
+    image: mysql:8.4.0
+    environment:
+      MYSQL_DATABASE: psyexam
+      MYSQL_USER: sirsoldano
+      MYSQL_PASSWORD: p0ssw0rd
+      MYSQL_ROOT_PASSWORD: p0ssw0rd
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+#    - PMA_HOSTS=mysql-container
+#    - PMA_USER=sirsoldano
+#    - PMA_PASSWORD=p0ssw0rd
+    ports:
+    - 8080:80
