@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id         Int      @id @default(autoincrement())
+  sex        Int
+  birthdate  DateTime
+  initial    String   @db.Char(8)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  stackedExams StackedExam[]
+  results      Result[]
+}
+
+model Exam {
+  id        Int      @id @default(autoincrement())
+  examname  String   @db.VarChar(255)
+  cutoff    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stackedExams StackedExam[]
+  results      Result[]
+}
+
+model StackedExam {
+  id        Int      @id @default(autoincrement())
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId Int
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  examId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Result {
+  id        Int      @id @default(autoincrement())
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId Int
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  examId    Int
+  item0     Int
+  item1     Int
+  item2     Int
+  item3     Int
+  item4     Int
+  item5     Int
+  item6     Int
+  item7     Int
+  item8     Int
+  item9     Int
+  free0     String?  @db.VarChar(2000)
+  free1     String?  @db.VarChar(2000)
+  free2     String?  @db.VarChar(2000)
+  free3     String?  @db.VarChar(2000)
+  free4     String?  @db.VarChar(2000)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -4,9 +4,12 @@ services:
     build: ./docker/remix
     ports:
       - 3000:3000
+#      - 3000:3000
     volumes:
       - ./docker/remix/app:/usr/server/app
       - ./docker/remix/public:/usr/server/public
+      - ./docker/remix/prisma:/usr/server/prisma
+      - ./docker/remix/utils:/usr/server/utils
     stdin_open: true
     tty: true
 
@@ -22,7 +25,7 @@ services:
     volumes:
       - ./docker/db/data:/var/lib/mysql
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./docker/db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+#      - ./docker/db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 3306:3306
 

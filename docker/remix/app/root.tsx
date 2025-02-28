@@ -32,9 +32,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-      <header className="px-3 py-3 mb-4 border-bottom">
-          <span className="fs-4">心理検査</span>
-        </header>
         {children}
         <ScrollRestoration />
         <Scripts />
