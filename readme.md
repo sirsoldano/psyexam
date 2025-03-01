@@ -70,17 +70,24 @@
 | updated_at  | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP |
 
 ## 画面遷移
-1. `/` または `/doctor`
+1. `/` または `/index_doctor`
    - 患者IDを入力し送信 → `/patient/:id` または `/doctor/:id` へ遷移
+   - `/index_doctor`からは`/edit_exams`,`/edit_patients`へも遷移可能
 2. `/patient/:id`
    - 予定されている検査を表示
-   - 「実施する」ボタンで `/exam/:examname?patientId=:id` へ遷移
-3. `/exam/:examname?patientId=:id`
+   - 「実施する」ボタンで `/exam/:examId?patientId=:id` へ遷移
+3. `/exam/:examId?patientId=:id`
    - 検査の質問を表示し、回答後送信
    - `/patient/:id` にリダイレクトし、完了メッセージを表示
 4. `/doctor/:id`
    - 予定されている検査を削除可能
    - 「追加する」ボタンで新しい検査を選択可能
+5. `/edit_exams`
+   - 検査の追加、削除が可能
+   - 検査はexamsフォルダに:examname.jsonとして保存
+6. `/edit_patients`
+   - 患者の追加、削除が可能
+
 
 ## API仕様
 ### `GET /exams/:examname.json`
@@ -103,12 +110,13 @@
 }
 ```
 
+## 実際の使い方
+- cloneしたうえで、docker compose up
+- localhost:3000にアクセスし、まずはlocalhost:3000/index_doctorから患者と検査を登録
+- 検査名はexamsのjsonファイルと一致するように(拡張子部分は不要)
+
 ## 今後の改善点
 - **認証機能の追加:** 医師のログイン認証を追加
 - **CSVエクスポート:** 検査結果をCSVでダウンロード可能にする
 - **UIの改善:** 患者リストの検索・ソート機能を追加
-
----
-
-この仕様書をもとに、開発・運用を進めていきましょう。
 
