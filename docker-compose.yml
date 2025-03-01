@@ -4,10 +4,10 @@ services:
     build: ./docker/remix
     ports:
       - 3000:3000
-#      - 3000:3000
     volumes:
       - ./docker/remix/app:/usr/server/app
       - ./docker/remix/public:/usr/server/public
+      - ./docker/remix/exams:/usr/server/exams
       - ./docker/remix/prisma:/usr/server/prisma
       - ./docker/remix/utils:/usr/server/utils
     stdin_open: true
