@@ -4,10 +4,13 @@ RUN apt-get update -y && apt-get install -y openssl
 COPY ./package.json ./
 RUN npm install
 COPY . .
-RUN npx prisma generate
 
-ENV NODE_ENV=development
-CMD ["npm", "run", "dev"]
+COPY ./docker-entrypoint.sh /usr/server/docker-entrypoint.sh
+RUN chmod +x /usr/server/docker-entrypoint.sh
+ENTRYPOINT ["/usr/server/docker-entrypoint.sh"]
+
+#ENV NODE_ENV=development
+#CMD ["npm", "run", "dev"]
 
 #RUN npm run build
 #ENV NODE_ENV=production

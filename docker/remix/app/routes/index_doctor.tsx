@@ -34,10 +34,16 @@ export default function Index() {
         </button>
       </Form>
       <a
-        href="/exam_edit"
+        href="/edit_exams"
         className="mt-6 px-6 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600"
       >
         検査編集ページへ
+      </a>
+      <a
+        href="/edit_patients"
+        className="mt-6 px-6 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600"
+      >
+        患者編集ページへ
       </a>
     </div>
   );

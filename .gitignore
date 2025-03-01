@@ -2,4 +2,4 @@ docker/db/data
 docker/remix/node_modules
 docker/remix/.cache
 docker/remix/build
-docker/remix/.env
+docker/remix/prisma/migrations

@@ -12,6 +12,11 @@ services:
       - ./docker/remix/utils:/usr/server/utils
     stdin_open: true
     tty: true
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=mysql://root:p0ssw0rd@db:3306/psyexam
 
   db:
     container_name: mysql-container
@@ -28,6 +33,11 @@ services:
 #      - ./docker/db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   phpmyadmin:
     container_name: phpmyadmin
