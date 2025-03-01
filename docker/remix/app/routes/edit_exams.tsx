@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData, Link } from "@remix-run/react";
 import { prisma } from "utils/db.server";
 import { useState } from "react";
 
@@ -103,6 +103,7 @@ export default function ExamPage() {
           </li>
         ))}
       </ul>
+      <Link to="/index_doctor" className="block text-center text-blue-500 mt-4">戻る</Link>
     </div>
   );
 }
