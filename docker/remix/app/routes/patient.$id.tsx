@@ -3,6 +3,7 @@ import { useLoaderData, Link } from "@remix-run/react";
 import { prisma } from "utils/db.server";
 import { useSearchParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
+import { Layout } from "~/components/Layout";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const patientId = Number(params.id);
@@ -27,42 +28,48 @@ export default function PatientExams() {
   useEffect(() => {
     if (searchParams.get("success") === "true") {
       setShowMessage(true);
-
-      // 3秒後にメッセージを非表示にする
       setTimeout(() => {
         setShowMessage(false);
-        setSearchParams({}, { replace: true }); // URL から success を削除
+        setSearchParams({}, { replace: true });
       }, 3000);
     }
   }, [searchParams, setSearchParams]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+    <Layout title="心理検査一覧">
       {showMessage && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-2 rounded-md shadow-md">
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
           提出が完了しました！
         </div>
       )}
-      <h1 className="text-2xl font-bold mb-4">Patient Exam Results</h1>
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+      
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
         {stackedExams.length > 0 ? (
-          <ul className="space-y-2">
+          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {stackedExams.map((exam) => (
-              <li key={exam.id} className="p-3 border rounded-md bg-gray-50 flex justify-between items-center">
-                <span>{exam.exam.examname}</span>
-                <Link
-                  to={`/exam/${exam.exam.id}?patientId=${patientId}`}
-                  className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                >
-                  実施する
-                </Link>
+              <li key={exam.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                      {exam.exam.examname}
+                    </h3>
+                  </div>
+                  <Link
+                    to={`/exam/${exam.exam.id}?patientId=${patientId}`}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                  >
+                    実施する
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-gray-500">No exams found for this patient.</p>
+          <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+            この患者様の検査項目はありません。
+          </div>
         )}
       </div>
-    </div>
+    </Layout>
   );
 }
